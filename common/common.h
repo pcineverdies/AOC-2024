@@ -13,6 +13,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 namespace aoc {
@@ -91,5 +92,15 @@ std::vector<unsigned> strToVector(const std::string &s);
 /// Print the result of the two parts of aoc
 template <typename T>
 void printResult(const T &r1, const T &r2);
+
+/// Run a function for each single patch of regex `p` over `s`
+aoc::ExitCode
+forMatches(const std::string &s, const std::regex &p,
+           const std::function<ExitCode(const std::string &match)> &f);
+
+/// Run a function for the match of `p` over `s`
+aoc::ExitCode
+runOnMatch(const std::string &s, const std::regex &p,
+           const std::function<ExitCode(const std::smatch &match)> &f);
 
 } // namespace aoc

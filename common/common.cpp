@@ -86,6 +86,34 @@ std::vector<unsigned> aoc::strToVector(const std::string &s) {
   return result;
 }
 
+aoc::ExitCode
+aoc::forMatches(const std::string &s, const std::regex &p,
+                const std::function<ExitCode(const std::string &match)> &f) {
+  auto begin = std::sregex_iterator(s.begin(), s.end(), p);
+  auto end = std::sregex_iterator();
+
+  for (auto it = begin; it != end; ++it) {
+    auto result = f(it->str());
+    if (!result.isOk())
+      return result;
+  }
+
+  return ExitCode(Code::OK);
+}
+
+aoc::ExitCode
+aoc::runOnMatch(const std::string &s, const std::regex &p,
+                const std::function<ExitCode(const std::smatch &match)> &f) {
+  std::smatch match;
+  if (std::regex_match(s, match, p)) {
+    auto result = f(match);
+    if (!result.isOk())
+      return result;
+  }
+
+  return ExitCode(Code::OK);
+}
+
 // Template declaration
 
 template void aoc::zip<unsigned int>(
