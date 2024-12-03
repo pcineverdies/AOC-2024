@@ -95,7 +95,7 @@ aoc::forMatches(const std::string &s, const std::regex &p,
   for (auto it = begin; it != end; ++it) {
     auto result = f(it->str());
     if (!result.isOk())
-      return result;
+      handleExitCode(result);
   }
 
   return ExitCode(Code::OK);
@@ -108,10 +108,11 @@ aoc::runOnMatch(const std::string &s, const std::regex &p,
   if (std::regex_match(s, match, p)) {
     auto result = f(match);
     if (!result.isOk())
-      return result;
+      handleExitCode(result);
+    return result;
   }
 
-  return ExitCode(Code::OK);
+  return ExitCode(Code::PARSING_ERROR);
 }
 
 // Template declaration

@@ -18,15 +18,16 @@ static void solve() {
                                              : isMulActive;
 
           // Possibly modify the results
-          return aoc::runOnMatch(
-              match, std::regex(R"(^mul\((\d{1,3}),(\d{1,3})\)$)"),
-              [&](const std::smatch &mulMatch) -> aoc::ExitCode {
-                unsigned mul =
-                    std::stoul(mulMatch[1]) * std::stoul(mulMatch[2]);
-                result1 += mul;
-                result2 += isMulActive ? mul : 0;
-                return aoc::ExitCode(aoc::Code::OK);
-              });
+          aoc::runOnMatch(match, std::regex(R"(^mul\((\d{1,3}),(\d{1,3})\)$)"),
+                          [&](const std::smatch &mulMatch) -> aoc::ExitCode {
+                            unsigned mul = std::stoul(mulMatch[1]) *
+                                           std::stoul(mulMatch[2]);
+                            result1 += mul;
+                            result2 += isMulActive ? mul : 0;
+                            return aoc::ExitCode(aoc::Code::OK);
+                          });
+
+          return aoc::ExitCode(aoc::Code::OK);
         });
   });
 

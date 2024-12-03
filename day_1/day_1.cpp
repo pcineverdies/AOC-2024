@@ -8,16 +8,17 @@ static void solve() {
   std::map<unsigned, unsigned> occurrences;
 
   aoc::forLine(input, [&](const std::string &line) -> aoc::ExitCode {
-    std::regex pattern(R"((\d+)(\s+)(\d+))");
-    std::smatch matches;
-    if (std::regex_match(line, matches, pattern)) {
-      unsigned n1 = std::stoul(matches[1]);
-      unsigned n2 = std::stoul(matches[3]);
-      v1.push_back(n1), v2.push_back(n2), occurrences[n2]++;
-      return aoc::ExitCode(aoc::Code::OK);
-    }
-
-    return aoc::ExitCode(aoc::Code::PARSING_ERROR, line);
+    if (!aoc::runOnMatch(line, std::regex(R"((\d+)(\s+)(\d+))"),
+                         [&](const std::smatch &m) -> aoc::ExitCode {
+                           unsigned n1 = std::stoul(m[1]),
+                                    n2 = std::stoul(m[3]);
+                           v1.push_back(n1), v2.push_back(n2),
+                               occurrences[n2]++;
+                           return aoc::ExitCode(aoc::Code::OK);
+                         })
+             .isOk())
+      return aoc::ExitCode(aoc::Code::PARSING_ERROR);
+    return aoc::ExitCode(aoc::Code::OK);
   });
 
   std::sort(v1.begin(), v1.end());
