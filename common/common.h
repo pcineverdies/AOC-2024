@@ -93,6 +93,12 @@ std::vector<unsigned> strToVector(const std::string &s);
 template <typename T>
 void printResult(const T &r1, const T &r2);
 
+/// Convert a string to a vector of character
+std::vector<char> strToVectorChar(const std::string &s);
+
+/// Covert a vector of character to a string
+std::string vectorCharToStr(const std::vector<char> &c);
+
 /// Run a function for each single patch of regex `p` over `s`
 aoc::ExitCode
 forMatches(const std::string &s, const std::regex &p,

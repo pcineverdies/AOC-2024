@@ -86,6 +86,20 @@ std::vector<unsigned> aoc::strToVector(const std::string &s) {
   return result;
 }
 
+std::vector<char> aoc::strToVectorChar(const std::string &s) {
+  std::vector<char> res;
+  for (auto &x : s)
+    res.push_back(x);
+  return res;
+}
+
+std::string aoc::vectorCharToStr(const std::vector<char> &c) {
+  std::string res = "";
+  for (auto &x : c)
+    res += x;
+  return res;
+}
+
 aoc::ExitCode
 aoc::forMatches(const std::string &s, const std::regex &p,
                 const std::function<ExitCode(const std::string &match)> &f) {
