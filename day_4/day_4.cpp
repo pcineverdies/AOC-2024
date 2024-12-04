@@ -1,55 +1,56 @@
 #include "../common/common.h"
 
-static void countAndRotate(std::vector<std::vector<char>> &matrix,
-                           unsigned &result1, unsigned &result2) {
-  int n = matrix.size();
-  int m = matrix[0].size();
+using m_t = std::vector<std::vector<char>>;
+
+static void countXMAS(const m_t &matrix, aoc::result_t &result, int it = 4) {
+
+  int n = matrix.size(), m = matrix[0].size();
   auto rotated = matrix;
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
 
-      // Count XMAS from left to right
-      if (j + 4 <= m and matrix[i][j] == 'X' and matrix[i][j + 1] == 'M' and
-          matrix[i][j + 2] == 'A' and matrix[i][j + 3] == 'S')
-        result1++;
+      if (aoc::get(matrix[i], j + 0) == 'X' and
+          aoc::get(matrix[i], j + 1) == 'M' and
+          aoc::get(matrix[i], j + 2) == 'A' and
+          aoc::get(matrix[i], j + 3) == 'S')
+        result.first++;
 
-      // Count XMAS towards down-right
-      if (j + 4 <= m and i + 4 <= n and matrix[i][j] == 'X' and
-          matrix[i + 1][j + 1] == 'M' and matrix[i + 2][j + 2] == 'A' and
-          matrix[i + 3][j + 3] == 'S')
-        result1++;
+      if (aoc::get(aoc::get(matrix, i + 0), j + 0) == 'X' and
+          aoc::get(aoc::get(matrix, i + 1), j + 1) == 'M' and
+          aoc::get(aoc::get(matrix, i + 2), j + 2) == 'A' and
+          aoc::get(aoc::get(matrix, i + 3), j + 3) == 'S')
+        result.first++;
 
-      // Count X-MAS with 'M' on the right and 'S' on the left
-      if (i >= 1 and j >= 1 and i < n - 1 and j < m - 1 and
-          matrix[i][j] == 'A' and matrix[i + 1][j + 1] == 'M' and
-          matrix[i - 1][j + 1] == 'M' and matrix[i + 1][j - 1] == 'S' and
-          matrix[i - 1][j - 1] == 'S')
-        result2++;
+      if (aoc::get(aoc::get(matrix, i + 0), j + 0) == 'A' and
+          aoc::get(aoc::get(matrix, i + 1), j + 1) == 'M' and
+          aoc::get(aoc::get(matrix, i - 1), j + 1) == 'M' and
+          aoc::get(aoc::get(matrix, i + 1), j - 1) == 'S' and
+          aoc::get(aoc::get(matrix, i - 1), j - 1) == 'S')
+        result.second++;
 
-      // Compute next rotation
       rotated[j][n - 1 - i] = matrix[i][j];
     }
   }
 
-  matrix = rotated;
+  if (--it)
+    countXMAS(rotated, result, it);
 };
 
 static void solve() {
   std::string input = aoc::getInput("day_4/input.txt");
 
-  unsigned result1 = 0, result2 = 0;
-  std::vector<std::vector<char>> matrix;
+  aoc::result_t result;
+  m_t matrix;
 
   aoc::forLine(input, [&](const std::string &line) -> aoc::ExitCode {
     matrix.push_back(aoc::strToVectorChar(line));
     return aoc::ExitCode(aoc::Code::OK);
   });
 
-  for (int i = 0; i < 4; i++)
-    countAndRotate(matrix, result1, result2);
+  countXMAS(matrix, result);
 
-  aoc::printResult(result1, result2);
+  aoc::printResult(result);
 }
 
 int main(int argc, char *argv[]) { solve(); }

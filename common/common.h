@@ -18,6 +18,8 @@
 
 namespace aoc {
 
+using result_t = std::pair<unsigned, unsigned>;
+
 /// Define literal constants used to print on terminal with multiple colors.
 namespace Color {
 const std::string RED = "\033[0;31m";
@@ -93,6 +95,9 @@ std::vector<unsigned> strToVector(const std::string &s);
 template <typename T>
 void printResult(const T &r1, const T &r2);
 
+/// Print the result of the two parts of aoc
+void printResult(const std::pair<unsigned, unsigned> &s);
+
 /// Convert a string to a vector of character
 std::vector<char> strToVectorChar(const std::string &s);
 
@@ -108,5 +113,8 @@ forMatches(const std::string &s, const std::regex &p,
 aoc::ExitCode
 runOnMatch(const std::string &s, const std::regex &p,
            const std::function<ExitCode(const std::smatch &match)> &f);
+
+template <typename T>
+T get(const std::vector<T> &v, int i, T def = T());
 
 } // namespace aoc

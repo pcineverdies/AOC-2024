@@ -66,11 +66,25 @@ void aoc::zip(std::vector<T> &a, std::vector<T> &b,
 }
 
 template <typename T>
+T aoc::get(const std::vector<T> &v, int i, T def) {
+  if (i < 0 or i >= (int)v.size())
+    return def;
+  return v.at(i);
+}
+
+template <typename T>
 void aoc::printResult(const T &r1, const T &r2) {
   std::cout << aoc::Color::CYAN << "~> Part 1 result: " << aoc::Color::RESET
             << r1 << std::endl;
   std::cout << aoc::Color::CYAN << "~> Part 2 result: " << aoc::Color::RESET
             << r2 << std::endl;
+}
+
+void aoc::printResult(const std::pair<unsigned, unsigned> &s) {
+  std::cout << aoc::Color::CYAN << "~> Part 1 result: " << aoc::Color::RESET
+            << s.first << std::endl;
+  std::cout << aoc::Color::CYAN << "~> Part 2 result: " << aoc::Color::RESET
+            << s.second << std::endl;
 }
 
 std::vector<unsigned> aoc::strToVector(const std::string &s) {
@@ -134,5 +148,9 @@ aoc::runOnMatch(const std::string &s, const std::regex &p,
 template void aoc::zip<unsigned int>(
     std::vector<unsigned int> &, std::vector<unsigned int> &,
     const std::function<ExitCode(unsigned int, unsigned int)> &);
-
 template void aoc::printResult<unsigned>(const unsigned &, const unsigned &);
+template char aoc::get(const std::vector<char> &, int, char);
+template unsigned aoc::get(const std::vector<unsigned> &, int, unsigned);
+template int aoc::get(const std::vector<int> &, int, int);
+template std::vector<char> aoc::get(const std::vector<std::vector<char>> &, int,
+                                    std::vector<char>);
