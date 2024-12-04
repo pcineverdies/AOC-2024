@@ -13,6 +13,19 @@ std::string aoc::ExitCode::getExitCodeName() const {
     return "[ERROR NAME NOT FOUND]";
   }
 }
+void aoc::forIndex(ii starti, ii endi, ii startj, ii endj,
+                   const std::function<void(int, int)> &f) {
+  for (ii i = starti; i < endi; i++) {
+    for (ii j = startj; j < endj; j++) {
+      f(i, j);
+    }
+  }
+}
+
+void aoc::forIndex(ii starti, ii endi, const std::function<void(int)> &f) {
+  for (ii i = starti; i < endi; i++)
+    f(i);
+}
 
 void aoc::handleExitCode(const ExitCode &e) {
 
@@ -143,6 +156,17 @@ aoc::runOnMatch(const std::string &s, const std::regex &p,
   return ExitCode(Code::PARSING_ERROR);
 }
 
+template <typename T>
+std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, int i, int j) {
+  int n = (int)v.size();
+  if (n == 0)
+    return {};
+  int m = (int)v[0].size();
+  if (i < 0 or i >= n or j < 0 or j >= m)
+    return {};
+  return v.at(i).at(j);
+}
+
 // Template declaration
 
 template void aoc::zip<unsigned int>(
@@ -152,5 +176,9 @@ template void aoc::printResult<unsigned>(const unsigned &, const unsigned &);
 template char aoc::get(const std::vector<char> &, int, char);
 template unsigned aoc::get(const std::vector<unsigned> &, int, unsigned);
 template int aoc::get(const std::vector<int> &, int, int);
-template std::vector<char> aoc::get(const std::vector<std::vector<char>> &, int,
-                                    std::vector<char>);
+template std::optional<char> aoc::get(const std::vector<std::vector<char>> &,
+                                      int, int);
+template std::optional<int> aoc::get(const std::vector<std::vector<int>> &, int,
+                                     int);
+template std::optional<unsigned>
+aoc::get(const std::vector<std::vector<unsigned>> &, int, int);

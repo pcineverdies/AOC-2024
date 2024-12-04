@@ -16,6 +16,20 @@
 #include <utility>
 #include <vector>
 
+using u = unsigned;
+using ii = int;
+using s = std::string;
+using c = char;
+using vu_t = std::vector<unsigned>;
+using vi_t = std::vector<int>;
+using vc_t = std::vector<char>;
+using vs_t = std::vector<std::string>;
+using vvu_t = std::vector<std::vector<unsigned>>;
+using vvi_t = std::vector<std::vector<int>>;
+using vvc_t = std::vector<std::vector<char>>;
+using vvs_t = std::vector<std::vector<std::string>>;
+using vvs_t = std::vector<std::vector<std::string>>;
+
 namespace aoc {
 
 using result_t = std::pair<unsigned, unsigned>;
@@ -116,5 +130,13 @@ runOnMatch(const std::string &s, const std::regex &p,
 
 template <typename T>
 T get(const std::vector<T> &v, int i, T def = T());
+
+template <typename T>
+std::optional<T> get(const std::vector<std::vector<T>> &v, int i, int j);
+
+void forIndex(ii starti, ii endi, ii startj, ii endj,
+              const std::function<void(int, int)> &f);
+
+void forIndex(ii starti, ii endi, const std::function<void(int)> &f);
 
 } // namespace aoc
