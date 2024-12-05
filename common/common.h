@@ -128,6 +128,11 @@ aoc::ExitCode
 runOnMatch(const std::string &s, const std::regex &p,
            const std::function<ExitCode(const std::smatch &match)> &f);
 
+std::vector<u> stringToUnsigned(const std::string &str);
+
+template <typename T>
+bool equalVectors(const std::vector<T> &a, const std::vector<T> &b);
+
 template <typename T>
 T get(const std::vector<T> &v, int i, T def = T());
 

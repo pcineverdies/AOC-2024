@@ -167,6 +167,29 @@ std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, int i, int j) {
   return v.at(i).at(j);
 }
 
+std::vector<u> aoc::stringToUnsigned(const std::string &str) {
+  std::vector<u> numbers;
+  std::stringstream ss(str);
+  std::string token;
+
+  while (std::getline(ss, token, ','))
+    numbers.push_back(std::stoul(token));
+
+  return numbers;
+}
+
+template <typename T>
+bool aoc::equalVectors(const std::vector<T> &a, const std::vector<T> &b) {
+  if (a.size() != b.size())
+    return false;
+
+  for (u i = 0; i < a.size(); i++)
+    if (a[i] != b[i])
+      return false;
+
+  return true;
+}
+
 // Template declaration
 
 template void aoc::zip<unsigned int>(
@@ -182,3 +205,4 @@ template std::optional<int> aoc::get(const std::vector<std::vector<int>> &, int,
                                      int);
 template std::optional<unsigned>
 aoc::get(const std::vector<std::vector<unsigned>> &, int, int);
+template bool aoc::equalVectors(const std::vector<u> &, const std::vector<u> &);
