@@ -156,6 +156,13 @@ aoc::runOnMatch(const std::string &s, const std::regex &p,
   return ExitCode(Code::PARSING_ERROR);
 }
 
+void aoc::runOnMatch(const std::string &s, const std::regex &p,
+                     const std::function<void(const std::smatch &match)> &f) {
+  std::smatch match;
+  if (std::regex_match(s, match, p))
+    f(match);
+}
+
 template <typename T>
 std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, int i, int j) {
   int n = (int)v.size();
@@ -167,12 +174,12 @@ std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, int i, int j) {
   return v.at(i).at(j);
 }
 
-std::vector<u> aoc::stringToUnsigned(const std::string &str) {
+std::vector<u> aoc::stringToUnsigned(const std::string &str, char sep) {
   std::vector<u> numbers;
   std::stringstream ss(str);
   std::string token;
 
-  while (std::getline(ss, token, ','))
+  while (std::getline(ss, token, sep))
     numbers.push_back(std::stoul(token));
 
   return numbers;
