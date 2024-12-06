@@ -20,6 +20,7 @@ using u = unsigned;
 using ii = int;
 using s = std::string;
 using c = char;
+using b = bool;
 using vu_t = std::vector<unsigned>;
 using vi_t = std::vector<int>;
 using vc_t = std::vector<char>;
