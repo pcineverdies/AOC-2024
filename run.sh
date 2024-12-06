@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Helper function to exit script on failed command
+exit_on_fail() {
+    if [[ $? -ne 0 ]]; then
+        if [[ ! -z $1 ]]; then
+            echo -e "\n$1"
+        fi
+        echo_subsection "Build failed!"
+        exit 1
+    fi
+}
 
 if ! command -v xclip &> /dev/null; then
     echo "Error: xclip is not installed. Install it using 'sudo apt install xclip' or equivalent."
@@ -35,7 +46,10 @@ if [[ "$X" =~ ^[1-9]$|^1[0-9]$|^2[0-5]$ ]]; then
 
     # If the day folder exists, compile and run the code
     echo "Running day $X..."
-    g++ -o ex -Wall -std=c++20 common/common.cpp "$DAY_FOLDER/$DAY_FOLDER.cpp" && ./ex
+    g++ -o ex -Wall -std=c++20 common/common.cpp "$DAY_FOLDER/$DAY_FOLDER.cpp" 
+    exit_on_fail "Error while compiling..."
+    echo "Correctly compiled!"
+    time ./ex
 
 else
     echo "Invalid input. Please enter a number between 1 and 25."

@@ -3,32 +3,36 @@
 
 using usu_t = std::unordered_set<u>;
 
-static bool explore(const vvc_t &g, usu_t &v, usu_t &p, u i, u d, usu_t &o,
-                    b t = false) {
+static bool explore(const vvc_t &grid, usu_t &points, usu_t &positions,
+                    usu_t &obs, u point, u dir, b spec = false) {
 
-  if (p.contains((d << 16) + i))
+  if (positions.contains((dir << 16) + point))
     return true;
-  p.insert((d << 16) + i);
 
-  if (!t)
-    v.insert(i);
+  positions.insert((dir << 16) + point);
 
-  u ni = d == 0 ? i - 256 : d == 1 ? i + 1 : d == 2 ? i + 256 : i - 1;
-  u nd = (d + 1) % 4;
+  if (!spec)
+    points.insert(point);
 
-  auto next = aoc::get(g, ni >> 8, ni & 255);
+  u pointNext = dir == 0   ? point - 0x100
+                : dir == 1 ? point + 1
+                : dir == 2 ? point + 0x100
+                           : point - 1;
+
+  auto next = aoc::get(grid, pointNext >> 8, pointNext & 0xff);
   if (!next.has_value())
     return false;
 
-  if (!t and next.value() != '#' and !o.contains(ni) and !v.contains(ni)) {
-    usu_t cp = p, co = {ni};
-    if (explore(g, v, cp, i, nd, co, true))
-      o.insert(ni);
+  if (!spec and next.value() != '#' and !obs.contains(pointNext) and
+      !points.contains(pointNext)) {
+    usu_t pc = positions, oc = {pointNext};
+    if (explore(grid, points, pc, oc, point, (dir + 1) % 4, true))
+      obs.insert(pointNext);
   }
 
-  return next.value() == '#' or (t and o.contains(ni))
-             ? explore(g, v, p, i, nd, o, t)
-             : explore(g, v, p, ni, d, o, t);
+  return next.value() == '#' or (spec and obs.contains(pointNext))
+             ? explore(grid, points, positions, obs, point, (dir + 1) % 4, spec)
+             : explore(grid, points, positions, obs, pointNext, dir, spec);
 }
 
 static void solve() {
@@ -42,17 +46,14 @@ static void solve() {
     return aoc::ExitCode(aoc::Code::OK);
   });
 
-  u ii = 0;
-  for (u i = 0; i < grid.size(); i++) {
-    for (u j = 0; j < grid[0].size(); j++)
-      ii = (grid[i][j] == '^') ? (i << 8) + j : ii;
-  }
+  u index = 0;
+  aoc::forIndex(0, grid.size(), 0, grid[0].size(), [&](int i, int j) {
+    index = (grid[i][j] == '^') ? (i << 8) + j : index;
+  });
 
   usu_t visited, positions, obstacles;
-  explore(grid, visited, positions, ii, 0, obstacles);
-  result.first = visited.size();
-  result.second =
-      obstacles.contains(ii) ? obstacles.size() - 1 : obstacles.size();
+  explore(grid, visited, positions, obstacles, index, 0);
+  result = {visited.size(), obstacles.size()};
 
   aoc::printResult(result);
 }
