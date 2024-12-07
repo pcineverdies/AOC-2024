@@ -16,7 +16,11 @@
 #include <utility>
 #include <vector>
 
-using u = unsigned;
+using u8 = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+using u = u64;
 using ii = int;
 using s = std::string;
 using c = char;
@@ -33,7 +37,7 @@ using vvs_t = std::vector<std::vector<std::string>>;
 
 namespace aoc {
 
-using result_t = std::pair<unsigned, unsigned>;
+using result_t = std::pair<uint64_t, uint64_t>;
 
 /// Define literal constants used to print on terminal with multiple colors.
 namespace Color {
@@ -104,14 +108,14 @@ void zip(std::vector<T> &a, std::vector<T> &b,
 void handleExitCode(const ExitCode &e);
 
 /// Convert a string of unsinged numbers into a vector of unsinged
-std::vector<unsigned> strToVector(const std::string &s);
+std::vector<u64> strToVector(const std::string &s);
 
 /// Print the result of the two parts of aoc
 template <typename T>
 void printResult(const T &r1, const T &r2);
 
 /// Print the result of the two parts of aoc
-void printResult(const std::pair<unsigned, unsigned> &s);
+void printResult(const std::pair<u64, u64> &s);
 
 /// Convert a string to a vector of character
 std::vector<char> strToVectorChar(const std::string &s);
@@ -147,5 +151,7 @@ void forIndex(ii starti, ii endi, ii startj, ii endj,
               const std::function<void(int, int)> &f);
 
 void forIndex(ii starti, ii endi, const std::function<void(int)> &f);
+
+void printBinary(u val);
 
 } // namespace aoc

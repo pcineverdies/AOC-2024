@@ -93,22 +93,31 @@ void aoc::printResult(const T &r1, const T &r2) {
             << r2 << std::endl;
 }
 
-void aoc::printResult(const std::pair<unsigned, unsigned> &s) {
+void aoc::printResult(const std::pair<u64, u64> &s) {
   std::cout << aoc::Color::CYAN << "~> Part 1 result: " << aoc::Color::RESET
             << s.first << std::endl;
   std::cout << aoc::Color::CYAN << "~> Part 2 result: " << aoc::Color::RESET
             << s.second << std::endl;
 }
 
-std::vector<unsigned> aoc::strToVector(const std::string &s) {
+void aoc::printBinary(u val) {
+  u mask = 1 << 31;
+  while (mask) {
+    std::cout << ((val & mask) ? "1" : "0");
+    mask >>= 1;
+  }
+  std::cout << std::endl;
+}
+
+std::vector<u64> aoc::strToVector(const std::string &s) {
   std::regex pattern(R"(\d+)");
   auto begin = std::sregex_iterator(s.begin(), s.end(), pattern);
   auto end = std::sregex_iterator();
 
-  std::vector<unsigned> result;
+  std::vector<u64> result;
 
   for (auto it = begin; it != end; ++it)
-    result.push_back(std::stoul(it->str()));
+    result.push_back(std::stoull(it->str()));
 
   return result;
 }

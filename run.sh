@@ -46,7 +46,12 @@ if [[ "$X" =~ ^[1-9]$|^1[0-9]$|^2[0-5]$ ]]; then
 
     # If the day folder exists, compile and run the code
     echo "Running day $X..."
-    g++ -o ex -Wall -std=c++20 common/common.cpp "$DAY_FOLDER/$DAY_FOLDER.cpp" 
+
+    g++ -o ex -Wall \
+      -march=native -funroll-loops \
+      -O3 -std=c++20 common/common.cpp \
+      "$DAY_FOLDER/$DAY_FOLDER.cpp" 
+
     exit_on_fail "Error while compiling..."
     echo "Correctly compiled!"
     time ./ex
