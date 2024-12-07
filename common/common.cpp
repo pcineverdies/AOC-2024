@@ -53,12 +53,11 @@ std::string aoc::getInput(const std::string &fileName) {
   return res;
 }
 
-unsigned
-aoc::forLine(const std::string &s,
-             const std::function<ExitCode(const std::string &line)> &f) {
+u aoc::forLine(const std::string &s,
+               const std::function<ExitCode(const std::string &line)> &f) {
   std::istringstream stream(s);
   std::string line;
-  unsigned counter = 0;
+  u counter = 0;
 
   while (std::getline(stream, line))
     counter++, handleExitCode(f(line));
@@ -69,8 +68,8 @@ aoc::forLine(const std::string &s,
 template <typename T>
 void aoc::zip(std::vector<T> &a, std::vector<T> &b,
               const std::function<ExitCode(T, T)> &f) {
-  if (unsigned n = a.size(); n == b.size()) {
-    for (unsigned i = 0; i < n; i++)
+  if (u n = a.size(); n == b.size()) {
+    for (u i = 0; i < n; i++)
       handleExitCode(f(a[i], b[i]));
   } else {
     handleExitCode(ExitCode(Code::RUNTIME_ERROR,
@@ -83,14 +82,6 @@ T aoc::get(const std::vector<T> &v, int i, T def) {
   if (i < 0 or i >= (int)v.size())
     return def;
   return v.at(i);
-}
-
-template <typename T>
-void aoc::printResult(const T &r1, const T &r2) {
-  std::cout << aoc::Color::CYAN << "~> Part 1 result: " << aoc::Color::RESET
-            << r1 << std::endl;
-  std::cout << aoc::Color::CYAN << "~> Part 2 result: " << aoc::Color::RESET
-            << r2 << std::endl;
 }
 
 void aoc::printResult(const std::pair<u64, u64> &s) {
@@ -189,7 +180,7 @@ std::vector<u> aoc::stringToUnsigned(const std::string &str, char sep) {
   std::string token;
 
   while (std::getline(ss, token, sep))
-    numbers.push_back(std::stoul(token));
+    numbers.push_back(std::stoull(token));
 
   return numbers;
 }
@@ -208,17 +199,15 @@ bool aoc::equalVectors(const std::vector<T> &a, const std::vector<T> &b) {
 
 // Template declaration
 
-template void aoc::zip<unsigned int>(
-    std::vector<unsigned int> &, std::vector<unsigned int> &,
-    const std::function<ExitCode(unsigned int, unsigned int)> &);
-template void aoc::printResult<unsigned>(const unsigned &, const unsigned &);
+template void aoc::zip<u>(std::vector<u> &, std::vector<u> &,
+                          const std::function<ExitCode(u, u)> &);
 template char aoc::get(const std::vector<char> &, int, char);
-template unsigned aoc::get(const std::vector<unsigned> &, int, unsigned);
+template u aoc::get(const std::vector<u> &, int, u);
 template int aoc::get(const std::vector<int> &, int, int);
 template std::optional<char> aoc::get(const std::vector<std::vector<char>> &,
                                       int, int);
 template std::optional<int> aoc::get(const std::vector<std::vector<int>> &, int,
                                      int);
-template std::optional<unsigned>
-aoc::get(const std::vector<std::vector<unsigned>> &, int, int);
+template std::optional<u> aoc::get(const std::vector<std::vector<u>> &, int,
+                                   int);
 template bool aoc::equalVectors(const std::vector<u> &, const std::vector<u> &);

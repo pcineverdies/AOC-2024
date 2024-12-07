@@ -3,7 +3,7 @@
 static void solve() {
   std::string input = aoc::getInput("day_3/input.txt");
 
-  unsigned result1 = 0, result2 = 0;
+  aoc::result_t result;
 
   // Initially multiplications are active
   bool isMulActive = true;
@@ -19,19 +19,18 @@ static void solve() {
 
           // Possibly modify the results
           aoc::runOnMatch(match, std::regex(R"(^mul\((\d{1,3}),(\d{1,3})\)$)"),
-                          [&](const std::smatch &mulMatch) -> aoc::ExitCode {
+                          [&](const std::smatch &mulMatch) {
                             unsigned mul = std::stoul(mulMatch[1]) *
                                            std::stoul(mulMatch[2]);
-                            result1 += mul;
-                            result2 += isMulActive ? mul : 0;
-                            return aoc::ExitCode(aoc::Code::OK);
+                            result.first += mul;
+                            result.second += isMulActive ? mul : 0;
                           });
 
           return aoc::ExitCode(aoc::Code::OK);
         });
   });
 
-  aoc::printResult(result1, result2);
+  aoc::printResult(result);
 }
 
 int main(int argc, char *argv[]) { solve(); }

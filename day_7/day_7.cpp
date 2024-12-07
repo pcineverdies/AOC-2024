@@ -1,19 +1,17 @@
 #include "../common/common.h"
 
-using vu64_t = std::vector<u64>;
+static u applyOperators(vu_t &operands, u operators) {
+  u result = operands[0], size = operands.size();
 
-static u64 applyOperators(vu64_t &operands, u64 operators) {
-  u64 result = operands[0], size = operands.size();
-
-  auto concat = [](u64 a, u64 b) -> u64 {
-    u64 power = (u64)std::ceil(std::log10(b + 1)), p = 1;
+  auto concat = [](u a, u b) -> u {
+    u power = (u)std::ceil(std::log10(b + 1)), p = 1;
     while (power--)
       p *= 10;
     return a * p + b;
   };
 
-  for (u64 i = 1; i < size; i++) {
-    u64 op = (operators >> (2 * i - 2)) & 3;
+  for (u i = 1; i < size; i++) {
+    u op = (operators >> (2 * i - 2)) & 3;
     if (op == 0)
       result += operands[i];
     else if (op == 1)
@@ -27,11 +25,11 @@ static u64 applyOperators(vu64_t &operands, u64 operators) {
   return result;
 };
 
-static bool tryOperators(u64 result, vu64_t &operands, bool concat = false) {
+static bool tryOperators(u result, vu_t &operands, bool concat = false) {
 
   u size = operands.size();
-  std::queue<std::pair<u64, u64>> next;
-  std::unordered_set<u64> covered;
+  std::queue<std::pair<u, u>> next;
+  std::unordered_set<u> covered;
   next.emplace(0, 1);
   next.emplace(1, 1);
   if (concat)
@@ -42,7 +40,7 @@ static bool tryOperators(u64 result, vu64_t &operands, bool concat = false) {
     next.pop();
 
     if (!covered.contains(operators)) {
-      u64 computed = applyOperators(operands, operators);
+      u computed = applyOperators(operands, operators);
       covered.insert(operators);
       if (computed == result)
         return true;
@@ -63,11 +61,11 @@ static void solve() {
   std::string input = aoc::getInput("day_7/input.txt");
 
   aoc::result_t result;
-  std::vector<std::pair<u64, vu64_t>> bridges;
+  std::vector<std::pair<u, vu_t>> bridges;
 
   aoc::forLine(input, [&](const s &line) -> aoc::ExitCode {
     auto t = aoc::strToVector(line);
-    u64 val = t[0];
+    u val = t[0];
     t.erase(t.begin());
     bridges.emplace_back(val, t);
     return aoc::ExitCode(aoc::Code::OK);

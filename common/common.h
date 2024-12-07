@@ -25,11 +25,11 @@ using ii = int;
 using s = std::string;
 using c = char;
 using b = bool;
-using vu_t = std::vector<unsigned>;
+using vu_t = std::vector<u>;
 using vi_t = std::vector<int>;
 using vc_t = std::vector<char>;
 using vs_t = std::vector<std::string>;
-using vvu_t = std::vector<std::vector<unsigned>>;
+using vvu_t = std::vector<std::vector<u>>;
 using vvi_t = std::vector<std::vector<int>>;
 using vvc_t = std::vector<std::vector<char>>;
 using vvs_t = std::vector<std::vector<std::string>>;
@@ -94,8 +94,8 @@ std::string getInput(const std::string &fileName);
 
 /// Run function `f` over each line of the input string `s`; return the number
 /// of lines analyzed.
-unsigned forLine(const std::string &s,
-                 const std::function<ExitCode(const std::string &line)> &f);
+u forLine(const std::string &s,
+          const std::function<ExitCode(const std::string &line)> &f);
 
 /// Zip two vectors and run function `f` of each pair of elements.
 template <typename T>
@@ -108,14 +108,14 @@ void zip(std::vector<T> &a, std::vector<T> &b,
 void handleExitCode(const ExitCode &e);
 
 /// Convert a string of unsinged numbers into a vector of unsinged
-std::vector<u64> strToVector(const std::string &s);
+std::vector<u> strToVector(const std::string &s);
 
 /// Print the result of the two parts of aoc
 template <typename T>
 void printResult(const T &r1, const T &r2);
 
 /// Print the result of the two parts of aoc
-void printResult(const std::pair<u64, u64> &s);
+void printResult(const std::pair<u, u> &s);
 
 /// Convert a string to a vector of character
 std::vector<char> strToVectorChar(const std::string &s);
