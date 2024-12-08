@@ -34,6 +34,7 @@ using vvi_t = std::vector<std::vector<int>>;
 using vvc_t = std::vector<std::vector<char>>;
 using vvs_t = std::vector<std::vector<std::string>>;
 using vvs_t = std::vector<std::vector<std::string>>;
+using usu_t = std::unordered_set<u>;
 
 namespace aoc {
 
@@ -133,25 +134,34 @@ aoc::ExitCode
 runOnMatch(const std::string &s, const std::regex &p,
            const std::function<ExitCode(const std::smatch &match)> &f);
 
+/// Run a function `f on each meatch of regex `p` over `s`
 void runOnMatch(const std::string &s, const std::regex &p,
                 const std::function<void(const std::smatch &match)> &f);
 
+/// Convert a string to a vector of unsigned using `sep` as separator
 std::vector<u> stringToUnsigned(const std::string &str, char sep = ',');
 
+/// Check whether two vectors are identical (same size and same elements)
 template <typename T>
 bool equalVectors(const std::vector<T> &a, const std::vector<T> &b);
 
+/// Get element `i` from `v` if in range, `def` otherwise
 template <typename T>
 T get(const std::vector<T> &v, int i, T def = T());
 
+/// Get element `i``j` from matrix `v`
 template <typename T>
 std::optional<T> get(const std::vector<std::vector<T>> &v, int i, int j);
 
+// Run a function for indexes from `starti` to `endi` and from `startj` to
+// `endj`
 void forIndex(ii starti, ii endi, ii startj, ii endj,
               const std::function<void(int, int)> &f);
 
+/// Run a function for index from `starti` to `endi`
 void forIndex(ii starti, ii endi, const std::function<void(int)> &f);
 
+/// Print an unsigned in binary format
 void printBinary(u val);
 
 } // namespace aoc

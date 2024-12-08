@@ -1,7 +1,5 @@
 #include "../common/common.h"
 
-using usu_t = std::unordered_set<u>;
-
 static void solve() {
   std::string input = aoc::getInput("day_8/input.txt");
 
@@ -11,11 +9,10 @@ static void solve() {
   u size = 0;
 
   auto insert = [&](u x, u y, u s, u m) {
-    if (x < s and y < s) {
-      if (m == 1)
-        antinodesFirst.insert((y << 8) + x);
+    if (x < s and y < s and m == 1)
+      antinodesFirst.insert((y << 8) + x);
+    if (x < s and y < s)
       antinodesSecond.insert((y << 8) + x);
-    }
   };
 
   aoc::forLine(input, [&](const s &line) -> aoc::ExitCode {
@@ -26,20 +23,16 @@ static void solve() {
     return aoc::ExitCode(aoc::Code::OK);
   });
 
-  for (auto &[c, a] : antennas) {
+  for (auto &[_, a] : antennas) {
     aoc::forIndex(0, a.size(), [&](int i) {
-      aoc::forIndex(0, i, [&](int j) {
-        u a1y = a[i] >> 8, a1x = a[i] & 0xff;
-        u a2y = a[j] >> 8, a2x = a[j] & 0xff;
+      aoc::forIndex(0, i, 0, 50, [&](int j, int m) {
+        ii a1y = a[i] >> 8, a1x = a[i] & 255, a2y = a[j] >> 8, a2x = a[j] & 255;
         if (a2x <= a1x)
           std::swap(a2x, a1x), std::swap(a2y, a1y);
-        aoc::forIndex(0, 50, [&](int m) {
-          u diffx = std::abs((int)a1x - (int)a2x) * m,
-            diffy = std::abs((int)a1y - (int)a2y) * m;
-          u ant1x = a1x - diffx, ant1y = a1y + ((a2y >= a1y) ? -diffy : +diffy),
-            ant2x = a2x + diffx, ant2y = a2y + ((a2y >= a1y) ? +diffy : -diffy);
-          insert(ant1x, ant1y, size, m), insert(ant2x, ant2y, size, m);
-        });
+        u diffx = std::abs(a1x - a2x) * m, diffy = std::abs(a1y - a2y) * m;
+        u ant1x = a1x - diffx, ant1y = a1y + ((a2y >= a1y) ? -diffy : +diffy),
+          ant2x = a2x + diffx, ant2y = a2y + ((a2y >= a1y) ? +diffy : -diffy);
+        insert(ant1x, ant1y, size, m), insert(ant2x, ant2y, size, m);
       });
     });
   }
