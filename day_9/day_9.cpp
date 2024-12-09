@@ -10,7 +10,7 @@ static void solve() {
 
   auto computeChecksum = [](const vu_t &v, u &result) {
     for (u i = 0; i < v.size(); i++) {
-      if (v[i] != -1)
+      if (v[i] != (u)-1)
         result += i * v[i];
     }
   };
@@ -21,7 +21,7 @@ static void solve() {
   });
 
   for (u i = 0; i < diskCompressed.size(); i++) {
-    for (u j = 0; j < (diskCompressed[i] - '0'); j++) {
+    for (u j = 0; j < (u)(diskCompressed[i] - '0'); j++) {
       disk1.push_back(i & 1 ? -1 : i >> 1);
       disk2.push_back(i & 1 ? -1 : i >> 1);
       toCover = (i & 1) ? toCover : i >> 1;
@@ -30,9 +30,9 @@ static void solve() {
 
   u left = disk1.size() - 1, right = 0;
   while (right < left) {
-    while (right < left && disk1[right] != -1)
+    while (right < left && disk1[right] != (u)-1)
       right++;
-    while (right < left && disk1[left] == -1)
+    while (right < left && disk1[left] == (u)-1)
       left--;
     std::swap(disk1[right++], disk1[left--]);
   }
@@ -49,7 +49,7 @@ static void solve() {
     }
 
     for (u index = 0; index < disk2.size(); index++) {
-      sizeSpace = (disk2[index] == -1) ? sizeSpace + 1 : 0;
+      sizeSpace = (disk2[index] == (u)-1) ? sizeSpace + 1 : 0;
       if (disk2[index] == toCover)
         break;
       if (sizeSpace == sizeFile) {
