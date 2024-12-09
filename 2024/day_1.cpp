@@ -1,7 +1,7 @@
 #include "../common/common.h"
 
 static void solve() {
-  std::string input = aoc::getInput("day_1/input.txt");
+  std::string input = aoc::getInput("2024/day_1.txt");
 
   std::vector<u> v1, v2;
   aoc::result_t result;

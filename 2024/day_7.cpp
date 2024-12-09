@@ -58,7 +58,7 @@ static bool tryOperators(u result, vu_t &operands, bool concat = false) {
 }
 
 static void solve() {
-  std::string input = aoc::getInput("day_7/input.txt");
+  std::string input = aoc::getInput("2024/day_7.txt");
 
   aoc::result_t result;
   std::vector<std::pair<u, vu_t>> bridges;

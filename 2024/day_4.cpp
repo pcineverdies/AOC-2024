@@ -29,7 +29,7 @@ static void countXMAS(const vvc_t &matrix, aoc::result_t &result, ii it) {
 };
 
 static void solve() {
-  s input = aoc::getInput("day_4/input.txt");
+  std::string input = aoc::getInput("2024/day_4.txt");
 
   aoc::result_t result;
   vvc_t matrix;

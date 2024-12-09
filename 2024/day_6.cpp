@@ -36,7 +36,7 @@ static bool explore(const vvc_t &grid, usu_t &points, usu_t &positions,
 }
 
 static void solve() {
-  std::string input = aoc::getInput("day_6/input.txt");
+  std::string input = aoc::getInput("2024/day_6.txt");
 
   aoc::result_t result;
   vvc_t grid;

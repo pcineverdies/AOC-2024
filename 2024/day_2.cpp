@@ -39,7 +39,7 @@ static bool isLevelSafe(const vu_t &v, u toRemove = 0) {
 }
 
 static void solve() {
-  std::string input = aoc::getInput("day_2/input.txt");
+  std::string input = aoc::getInput("2024/day_2.txt");
 
   aoc::result_t result;
 

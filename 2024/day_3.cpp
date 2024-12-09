@@ -1,7 +1,7 @@
 #include "../common/common.h"
 
 static void solve() {
-  std::string input = aoc::getInput("day_3/input.txt");
+  std::string input = aoc::getInput("2024/day_3.txt");
 
   aoc::result_t result;
 
