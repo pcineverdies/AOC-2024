@@ -1,24 +1,19 @@
 #include "../common/common.h"
 
-static u dfs(const vvc_t &grid, u s, u t, usu_t &r) {
+static void dfs(const vvc_t &g, u s, u t, usu_t &r, u &ans) {
 
-  if (t == '9' + 1) {
-    r.insert(s);
-    return 1;
+  if (t == ':')
+    r.insert(s), ans++;
+  else {
+    if ((u)aoc::get(g, s + aoc::R).value_or(0) == t)
+      dfs(g, s + aoc::R, t + 1, r, ans);
+    if ((u)aoc::get(g, s + aoc::L).value_or(0) == t)
+      dfs(g, s + aoc::L, t + 1, r, ans);
+    if ((u)aoc::get(g, s + aoc::U).value_or(0) == t)
+      dfs(g, s + aoc::U, t + 1, r, ans);
+    if ((u)aoc::get(g, s + aoc::D).value_or(0) == t)
+      dfs(g, s + aoc::D, t + 1, r, ans);
   }
-
-  u ans = 0;
-
-  if ((u)aoc::get(grid, s >> 16, (s + 1) & 0xffff).value_or(0) == t)
-    ans += dfs(grid, s + 1, t + 1, r);
-  if ((u)aoc::get(grid, s >> 16, (s - 1) & 0xffff).value_or(0) == t)
-    ans += dfs(grid, s - 1, t + 1, r);
-  if ((u)aoc::get(grid, (s + 0x10000) >> 16, s & 0xffff).value_or(0) == t)
-    ans += dfs(grid, s + 0x10000, t + 1, r);
-  if ((u)aoc::get(grid, (s - 0x10000) >> 16, s & 0xffff).value_or(0) == t)
-    ans += dfs(grid, s - 0x10000, t + 1, r);
-
-  return ans;
 }
 
 static void solve() {
@@ -35,7 +30,7 @@ static void solve() {
   aoc::forIndex(0, grid.size(), 0, grid[0].size(), [&](u i, u j) {
     if (grid[i][j] == '0') {
       usu_t reached;
-      result.second += dfs(grid, (i << 16) + j, '1', reached);
+      dfs(grid, aoc::getCoordinate(i, j), '1', reached, result.second);
       result.first += reached.size();
     }
   });
