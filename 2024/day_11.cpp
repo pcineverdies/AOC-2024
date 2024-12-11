@@ -2,29 +2,25 @@
 
 static std::map<std::pair<u, u>, u> memo;
 
-static u step(u stone, u iter) {
+static u step(u s, u i) {
 
-  if (iter == 0)
+  if (i == 0)
     return 1;
 
-  auto digits = [](u num) -> u { return (u)(log10(abs((long long)num))) + 1; };
+  if (memo.contains({s, i}))
+    return memo[{s, i}];
 
-  if (memo.contains({stone, iter}))
-    return memo[{stone, iter}];
+  u d = log10(abs((long long)s)) + 1, ans = 0;
+  u ns = (s == 0) ? 1 : s * 2024;
 
-  u d = digits(stone);
-  u ans = 0;
-  if (stone == 0) {
-    ans = step(1, iter - 1), memo.insert({{1, iter - 1}, ans});
-  } else if ((d & 1) == 0) {
-    u s1 = stone / (u)pow(10, d / 2), s2 = stone % (u)pow(10, d / 2);
-    u a1 = step(s1, iter - 1), a2 = step(s2, iter - 1);
-    memo.insert({{s1, iter - 1}, a1}), memo.insert({{s2, iter - 1}, a2});
+  if (s and !(d & 1)) {
+    u s1 = s / (u)pow(10, d / 2), s2 = s % (u)pow(10, d / 2);
+    u a1 = step(s1, i - 1), a2 = step(s2, i - 1);
+    memo.insert({{s1, i - 1}, a1}), memo.insert({{s2, i - 1}, a2});
     ans = a1 + a2;
-  } else {
-    ans = step(stone * 2024, iter - 1);
-    memo.insert({{stone * 2024, iter - 1}, ans});
-  }
+  } else
+    ans = step(ns, i - 1), memo.insert({{ns, i - 1}, ans});
+
   return ans;
 }
 
@@ -36,11 +32,10 @@ static void solve() {
 
   aoc::forLine(input, [&](const s &line) -> aoc::ExitCode {
     stones = aoc::strToVector(line);
+    for (auto &x : stones)
+      result.first += step(x, 25), result.second += step(x, 75);
     return aoc::ExitCode(aoc::Code::OK);
   });
-
-  for (auto &x : stones)
-    result.first += step(x, 25), result.second += step(x, 75);
 
   aoc::printResult(result);
 }
