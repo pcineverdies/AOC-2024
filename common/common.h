@@ -38,6 +38,11 @@ using usu_t = std::unordered_set<u>;
 
 namespace aoc {
 
+constexpr u U = -0x10000;
+constexpr u D = 0x10000;
+constexpr u L = -1;
+constexpr u R = 1;
+
 using result_t = std::pair<uint64_t, uint64_t>;
 
 /// Define literal constants used to print on terminal with multiple colors.
@@ -149,6 +154,9 @@ bool equalVectors(const std::vector<T> &a, const std::vector<T> &b);
 template <typename T>
 T get(const std::vector<T> &v, int i, T def = T());
 
+template <typename T>
+std::optional<T> get(const std::vector<std::vector<T>> &v, u pos);
+
 /// Get element `i``j` from matrix `v`
 template <typename T>
 std::optional<T> get(const std::vector<std::vector<T>> &v, int i, int j);
@@ -163,5 +171,7 @@ void forIndex(ii starti, ii endi, const std::function<void(int)> &f);
 
 /// Print an unsigned in binary format
 void printBinary(u val);
+
+u getCoordinate(const u &y, const u &x);
 
 } // namespace aoc

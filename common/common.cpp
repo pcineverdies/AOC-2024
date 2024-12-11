@@ -174,6 +174,18 @@ std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, int i, int j) {
   return v.at(i).at(j);
 }
 
+template <typename T>
+std::optional<T> aoc::get(const std::vector<std::vector<T>> &v, u pos) {
+  u n = (int)v.size();
+  if (n == 0)
+    return {};
+  u m = (int)v[0].size();
+  u i = pos >> 16, j = pos & 0xffff;
+  if (i >= n or j >= m)
+    return {};
+  return v.at(i).at(j);
+}
+
 std::vector<u> aoc::stringToUnsigned(const std::string &str, char sep) {
   std::vector<u> numbers;
   std::stringstream ss(str);
@@ -197,6 +209,8 @@ bool aoc::equalVectors(const std::vector<T> &a, const std::vector<T> &b) {
   return true;
 }
 
+u aoc::getCoordinate(const u &y, const u &x) { return (y << 16) + x; }
+
 // Template declaration
 
 template void aoc::zip<u>(std::vector<u> &, std::vector<u> &,
@@ -211,3 +225,7 @@ template std::optional<int> aoc::get(const std::vector<std::vector<int>> &, int,
 template std::optional<u> aoc::get(const std::vector<std::vector<u>> &, int,
                                    int);
 template bool aoc::equalVectors(const std::vector<u> &, const std::vector<u> &);
+
+template std::optional<char> aoc::get(const std::vector<std::vector<char>> &v,
+                                      u pos);
+template std::optional<u> aoc::get(const std::vector<std::vector<u>> &v, u pos);
