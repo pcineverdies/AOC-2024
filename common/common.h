@@ -21,6 +21,7 @@ using u16 = uint16_t;
 using u32 = uint32_t;
 using u64 = uint64_t;
 using u = u64;
+using uu = std::pair<u, u>;
 using ii = int;
 using s = std::string;
 using c = char;

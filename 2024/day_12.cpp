@@ -5,46 +5,35 @@ using mvu_t = std::unordered_map<u, vu_t>;
 
 static u countEdges(mvu_t &dirs) {
 
-  auto sv = [](u a, u b) -> bool {
-    auto ca = aoc::getCoordinate(a), cb = aoc::getCoordinate(b);
-    return ca.first < cb.first or
-           (ca.first == cb.first and ca.second > cb.second);
+  u ans = 4;
+
+  auto s = [](u a, u b, bool horizontal = true) -> bool {
+    auto [cay, cax] = aoc::getCoordinate(a);
+    auto [cby, cbx] = aoc::getCoordinate(b);
+    if (horizontal)
+      std::swap(cay, cax), std::swap(cby, cbx);
+    return cay < cby or (cay == cby and cax > cbx);
   };
-  auto sh = [](u a, u b) -> bool {
-    auto ca = aoc::getCoordinate(a), cb = aoc::getCoordinate(b);
-    return ca.second < cb.second or
-           (ca.second == cb.second and ca.first > cb.first);
-  };
 
-  std::sort(dirs[aoc::U].begin(), dirs[aoc::U].end(), sv);
-  std::sort(dirs[aoc::D].begin(), dirs[aoc::D].end(), sv);
-  std::sort(dirs[aoc::R].begin(), dirs[aoc::R].end(), sh);
-  std::sort(dirs[aoc::L].begin(), dirs[aoc::L].end(), sh);
-
-  u nedges = 4;
-
-  auto countv = [&](const vu_t &v) {
+  auto count = [&](const vu_t &v, bool horizontal) {
     for (u i = 0; i < v.size() - 1; i++) {
-      auto edge = aoc::getCoordinate(v[i]);
-      auto edgeNext = aoc::getCoordinate(v[i + 1]);
-      if (edge.first != edgeNext.first or edge.second != edgeNext.second + 1)
-        nedges++;
+      uu e = aoc::getCoordinate(v[i]), en = aoc::getCoordinate(v[i + 1]);
+      if (horizontal)
+        std::swap(e.first, e.second), std::swap(en.first, en.second);
+      ans += (e.first != en.first or e.second != en.second + 1);
     }
   };
 
-  auto counth = [&](const vu_t &v) {
-    for (u i = 0; i < v.size() - 1; i++) {
-      auto edge = aoc::getCoordinate(v[i]);
-      auto edgeNext = aoc::getCoordinate(v[i + 1]);
-      if (edge.second != edgeNext.second or edge.first != edgeNext.first + 1)
-        nedges++;
-    }
-  };
+  std::sort(dirs[aoc::U].begin(), dirs[aoc::U].end(),
+            [&](u a, u b) { return s(a, b, false); });
+  std::sort(dirs[aoc::D].begin(), dirs[aoc::D].end(),
+            [&](u a, u b) { return s(a, b, false); });
+  std::sort(dirs[aoc::R].begin(), dirs[aoc::R].end(), s);
+  std::sort(dirs[aoc::L].begin(), dirs[aoc::L].end(), s);
+  count(dirs[aoc::D], false), count(dirs[aoc::U], false);
+  count(dirs[aoc::R], true), count(dirs[aoc::L], true);
 
-  countv(dirs[aoc::D]), countv(dirs[aoc::U]);
-  counth(dirs[aoc::R]), counth(dirs[aoc::L]);
-
-  return nedges;
+  return ans;
 }
 
 static std::pair<u, u> bfs(const vvc_t &grid, u start, mvu_t &dirs) {
@@ -79,17 +68,14 @@ static void solve() {
     return aoc::ExitCode(aoc::Code::OK);
   });
 
-  for (u i = 0; i < grid.size(); i++) {
-    for (u j = 0; j < grid[0].size(); j++) {
-      u plot = aoc::getCoordinate(i, j);
-      if (!coveredPlot.contains(plot)) {
-        mvu_t dirs;
-        auto res = bfs(grid, plot, dirs);
-        result.first += res.first * res.second;
-        result.second += res.first * countEdges(dirs);
-      }
+  aoc::forIndex(0, grid.size(), 0, grid[0].size(), [&](u i, u j) {
+    if (!coveredPlot.contains(aoc::getCoordinate(i, j))) {
+      mvu_t dirs;
+      auto res = bfs(grid, aoc::getCoordinate(i, j), dirs);
+      result.first += res.first * res.second;
+      result.second += res.first * countEdges(dirs);
     }
-  }
+  });
 
   aoc::printResult(result);
 }
