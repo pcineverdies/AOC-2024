@@ -43,6 +43,10 @@ constexpr u U = -0x10000;
 constexpr u D = 0x10000;
 constexpr u L = -1;
 constexpr u R = 1;
+constexpr u UR = U + R;
+constexpr u UL = U + L;
+constexpr u DR = D + R;
+constexpr u DL = D + L;
 
 using result_t = std::pair<uint64_t, uint64_t>;
 
