@@ -174,4 +174,6 @@ void printBinary(u val);
 
 u getCoordinate(const u &y, const u &x);
 
+std::pair<u, u> getCoordinate(const u &c);
+
 } // namespace aoc

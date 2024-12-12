@@ -16,11 +16,21 @@ if ! command -v xclip &> /dev/null; then
     exit 1
 fi
 
-# Get the number from the argument
 Y=$1
 X=$2
 
-if [ "$Y" != "2024" ]; then
+years=("2022" "2023" "2024")
+
+found=false
+for year in "${years[@]}"; do
+  if [[ "$year" == "$1" ]]; then
+    found=true
+    break
+  fi
+done
+
+
+if [[ "$found" == false ]]; then
     echo "Year is not valid"
     exit 1
 fi
@@ -39,19 +49,21 @@ if [[ "$X" =~ ^[1-9]$|^1[0-9]$|^2[0-5]$ ]]; then
         sed -i "4s|.*|  std::string input = aoc::getInput(\"$Y/day_$X.txt\");|" "$Y/day_$X.cpp"
         xclip -selection clipboard -o > "$Y/day_$X.txt"
         echo "Folder and file created. You can now add your code to $DAY_FOLDER/$DAY_FOLDER.cpp."
+        sleep 1
+        nvim -p "$Y/day_$X.cpp" "$Y/day_$X.txt" 
+      else
+      # If the day folder exists, compile and run the code
+      echo "Running day $X..."
+
+      g++ -o ex -Wall \
+        -march=native -funroll-loops \
+        -O3 -std=c++20 common/common.cpp \
+        "$Y/day_$X.cpp" 
+
+      exit_on_fail "Error while compiling..."
+      echo "Correctly compiled!"
+      time ./ex
     fi
-
-    # If the day folder exists, compile and run the code
-    echo "Running day $X..."
-
-    g++ -o ex -Wall \
-      -march=native -funroll-loops \
-      -O3 -std=c++20 common/common.cpp \
-      "$Y/day_$X.cpp" 
-
-    exit_on_fail "Error while compiling..."
-    echo "Correctly compiled!"
-    time ./ex
 
 else
     echo "Invalid input. Please enter a number between 1 and 25."

@@ -211,6 +211,8 @@ bool aoc::equalVectors(const std::vector<T> &a, const std::vector<T> &b) {
 
 u aoc::getCoordinate(const u &y, const u &x) { return (y << 16) + x; }
 
+std::pair<u, u> aoc::getCoordinate(const u &c) { return {c >> 16, c & 0xffff}; }
+
 // Template declaration
 
 template void aoc::zip<u>(std::vector<u> &, std::vector<u> &,
