@@ -113,6 +113,19 @@ std::vector<u64> aoc::strToVector(const std::string &s) {
   return result;
 }
 
+std::vector<ii> aoc::strToVectorSigned(const std::string &s) {
+  std::regex pattern(R"(-?\d+)");
+  auto begin = std::sregex_iterator(s.begin(), s.end(), pattern);
+  auto end = std::sregex_iterator();
+
+  std::vector<ii> result;
+
+  for (auto it = begin; it != end; ++it)
+    result.push_back(std::stoll(it->str()));
+
+  return result;
+}
+
 std::vector<char> aoc::strToVectorChar(const std::string &s) {
   std::vector<char> res;
   for (auto &x : s)

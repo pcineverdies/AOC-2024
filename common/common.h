@@ -181,4 +181,6 @@ u getCoordinate(const u &y, const u &x);
 
 std::pair<u, u> getCoordinate(const u &c);
 
+std::vector<ii> strToVectorSigned(const std::string &s);
+
 } // namespace aoc
