@@ -47,6 +47,7 @@ constexpr u UR = U + R;
 constexpr u UL = U + L;
 constexpr u DR = D + R;
 constexpr u DL = D + L;
+const vu_t DIRS = {aoc::D, aoc::U, aoc::L, aoc::R};
 
 using result_t = std::pair<uint64_t, uint64_t>;
 
