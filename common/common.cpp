@@ -92,12 +92,11 @@ void aoc::printResult(const std::pair<u64, u64> &s) {
 }
 
 void aoc::printBinary(u val) {
-  u mask = 1 << 31;
+  u mask = (u)1 << 63;
   while (mask) {
     std::cout << ((val & mask) ? "1" : "0");
     mask >>= 1;
   }
-  std::cout << std::endl;
 }
 
 std::vector<u64> aoc::strToVector(const std::string &s) {
