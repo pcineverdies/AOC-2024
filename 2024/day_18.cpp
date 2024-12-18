@@ -5,51 +5,50 @@
 
 static void explore(const vu_t &grid, uu &result) {
 
-  const u end = aoc::getCoordinate(W - 1, W - 1);
-
   struct Path {
     u position;
-    u length;
     usu_t visited;
 
-    Path(u p, u l, usu_t &v) : position(p), length(l), visited(v) {}
+    Path(u p, usu_t v) : position(p), visited(std::move(v)) {}
 
-    bool operator<(const Path &rhs) const { return length > rhs.length; }
+    bool operator<(const Path &rhs) const {
+      return visited.size() > rhs.visited.size();
+    }
   };
 
   for (u i = M; i < grid.size(); i++) {
     u pathLength = -1;
     std::priority_queue<Path> queue;
-    std::unordered_map<u, u> scoreTile;
-    usu_t visited;
-    queue.emplace(0, 0, visited);
+    umuu_t scoreTile;
+    Path path(0, {0});
+
+    queue.emplace(path);
 
     while (!queue.empty()) {
 
-      Path path = queue.top();
+      path = queue.top();
       queue.pop();
 
-      if (path.position == end) {
-        pathLength = path.length;
+      if (path.position == aoc::getCoordinate(W - 1, W - 1)) {
+        pathLength = path.visited.size();
         break;
       }
 
       for (auto &dir : aoc::DIRS) {
 
         auto next = path.position + dir;
-        auto [ny, nx] = aoc::getCoordinate(next);
-        if (ny >= W or nx >= W or
+        Path newPath(next, path.visited);
+        newPath.visited.insert(next);
+
+        if ((next >> 16) >= W or (next & 0xffff) >= W or
             (std::find(grid.begin(), grid.begin() + i, next) !=
              grid.begin() + i) or
             path.visited.contains(next) or
-            (scoreTile.contains(next) and scoreTile[next] <= path.length + 1))
+            (scoreTile.contains(next) and
+             scoreTile[next] <= newPath.visited.size()))
           continue;
 
-        scoreTile[next] = path.length + 1;
-
-        Path newPath(next, path.length + 1, path.visited);
-        newPath.visited.insert(next);
-
+        scoreTile[next] = newPath.visited.size();
         queue.push(newPath);
       }
     }
@@ -61,6 +60,9 @@ static void explore(const vu_t &grid, uu &result) {
       result.second = i;
       return;
     }
+
+    while (!path.visited.contains(grid[i + 1]))
+      i++;
   }
 }
 
@@ -78,9 +80,10 @@ static void solve() {
 
   explore(bytes, result);
   auto [y, x] = aoc::getCoordinate(bytes[result.second - 1]);
-  std::cout << x << "," << y << std::endl;
-
-  aoc::printResult(result);
+  std::cout << aoc::Color::CYAN << "~> Part 1 result: " << aoc::Color::RESET
+            << result.first << std::endl;
+  std::cout << aoc::Color::CYAN << "~> Part 2 result: " << aoc::Color::RESET
+            << x << "," << y << std::endl;
 }
 
 int main(int argc, char *argv[]) { solve(); }

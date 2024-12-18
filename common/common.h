@@ -36,6 +36,7 @@ using vvc_t = std::vector<std::vector<char>>;
 using vvs_t = std::vector<std::vector<std::string>>;
 using vvs_t = std::vector<std::vector<std::string>>;
 using usu_t = std::unordered_set<u>;
+using umuu_t = std::unordered_map<u, u>;
 
 namespace aoc {
 
