@@ -37,6 +37,7 @@ using vvs_t = std::vector<std::vector<std::string>>;
 using vvs_t = std::vector<std::vector<std::string>>;
 using usu_t = std::unordered_set<u>;
 using umuu_t = std::unordered_map<u, u>;
+using rx = std::regex;
 
 namespace aoc {
 
@@ -110,6 +111,11 @@ std::string getInput(const std::string &fileName);
 u forLine(const std::string &s,
           const std::function<ExitCode(const std::string &line)> &f);
 
+/// Run function `f` over each line of the input string `s`; return the number
+/// of lines analyzed.
+u forLineVoid(const std::string &s,
+              const std::function<void(const std::string &line)> &f);
+
 /// Zip two vectors and run function `f` of each pair of elements.
 template <typename T>
 void zip(std::vector<T> &a, std::vector<T> &b,
@@ -135,6 +141,10 @@ std::vector<char> strToVectorChar(const std::string &s);
 
 /// Covert a vector of character to a string
 std::string vectorCharToStr(const std::vector<char> &c);
+
+/// Run a function for each single patch of regex `p` over `s`
+void forMatchesVoid(const std::string &s, const std::regex &p,
+                    const std::function<void(const std::string &match)> &f);
 
 /// Run a function for each single patch of regex `p` over `s`
 aoc::ExitCode

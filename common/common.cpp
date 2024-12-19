@@ -65,6 +65,18 @@ u aoc::forLine(const std::string &s,
   return counter;
 }
 
+u aoc::forLineVoid(const std::string &s,
+                   const std::function<void(const std::string &line)> &f) {
+  std::istringstream stream(s);
+  std::string line;
+  u counter = 0;
+
+  while (std::getline(stream, line))
+    counter++, f(line);
+
+  return counter;
+}
+
 template <typename T>
 void aoc::zip(std::vector<T> &a, std::vector<T> &b,
               const std::function<ExitCode(T, T)> &f) {
@@ -152,6 +164,16 @@ aoc::forMatches(const std::string &s, const std::regex &p,
   }
 
   return ExitCode(Code::OK);
+}
+
+void aoc::forMatchesVoid(
+    const std::string &s, const std::regex &p,
+    const std::function<void(const std::string &match)> &f) {
+  auto begin = std::sregex_iterator(s.begin(), s.end(), p);
+  auto end = std::sregex_iterator();
+
+  for (auto it = begin; it != end; ++it)
+    f(it->str());
 }
 
 aoc::ExitCode
