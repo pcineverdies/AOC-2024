@@ -189,6 +189,8 @@ void forIndex(ii starti, ii endi, const std::function<void(int)> &f);
 /// Print an unsigned in binary format
 void printBinary(u val);
 
+u manhattan(u start, u end);
+
 u getCoordinate(const u &y, const u &x);
 
 std::pair<u, u> getCoordinate(const u &c);

@@ -243,6 +243,13 @@ bool aoc::equalVectors(const std::vector<T> &a, const std::vector<T> &b) {
   return true;
 }
 
+u aoc::manhattan(u start, u end) {
+  auto [starty, startx] = aoc::getCoordinate(start);
+  auto [endy, endx] = aoc::getCoordinate(end);
+  return (u)std::abs((ii)starty - (ii)endy) +
+         (u)std::abs((ii)startx - (ii)endx);
+}
+
 u aoc::getCoordinate(const u &y, const u &x) { return (y << 16) + x; }
 
 std::pair<u, u> aoc::getCoordinate(const u &c) { return {c >> 16, c & 0xffff}; }
