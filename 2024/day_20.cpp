@@ -25,10 +25,9 @@ static u cheatCount(const vu_t &path, u limit) {
 
   for (u i = 0; i < path.size(); i++) {
     for (u j = i + 1; j < path.size(); j++) {
-      u d = aoc::manhattan(path[i], path[j]),
-        nl = i + (path.size() - j) + d - 1;
-      if (d <= limit and nl < il and il - nl >= 100)
-        ans++;
+      u d = aoc::manhattan(path[i], path[j]);
+      u nl = i + (path.size() - j) + d - 1;
+      ans += (d <= limit and nl < il and il - nl >= 100);
     }
   }
 
@@ -38,7 +37,6 @@ static u cheatCount(const vu_t &path, u limit) {
 static void solve() {
   std::string input = aoc::getInput("2024/day_20.txt");
 
-  aoc::result_t result;
   u start = 0, end = 0;
 
   aoc::forLine(input, [&](const s &line) -> aoc::ExitCode {
@@ -52,9 +50,7 @@ static void solve() {
   });
 
   auto path = getPath(start, end);
-  result = {cheatCount(path, 2), cheatCount(path, 20)};
-
-  aoc::printResult(result);
+  aoc::printResult({cheatCount(path, 2), cheatCount(path, 20)});
 }
 
 int main(int argc, char *argv[]) { solve(); }
